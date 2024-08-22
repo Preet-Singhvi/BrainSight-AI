@@ -2,8 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const connectDB = require('./dbconnection/dbconnection');
-const Patient = require('./models/patient');
 const patientRoutes = require('./routes/patient');
+require('dotenv').config();
 
 // Initialize Express app,initialize cors and body-parser
 const app = express();
@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //Making all the pdf files accessible
-app.use('/files',express.static("files"));
+app.use('/files',express.static(process.env.FILES_DIR || "files"));
 
 // Connect to local MongoDB
 connectDB()
