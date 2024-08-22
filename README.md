@@ -126,4 +126,7 @@ The application uses a polling mechanism to ensure that patient data is updated 
 2. PatientDialog: A form dialog for adding new patient records.
 3. FilesDialog: A dialog for viewing and uploading files associated with patients.
 
+# Note
+1. Multiple files can be uploaded at a time.
+
 
