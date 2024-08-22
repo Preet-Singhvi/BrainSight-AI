@@ -16,8 +16,8 @@ Installation
 
 Steps:
 1. Clone the repository:
-	git clone https://github.com/Preet-Singhvi/BrainSight-AI.git
-	cd BrainSight-AI
+	1. git clone https://github.com/Preet-Singhvi/BrainSight-AI.git
+	2. cd BrainSight-AI
 2. Install Dependencies:
 	npm install
 3. Set up MongoDB:
@@ -27,9 +27,9 @@ Steps:
 
 Environment Variables
 The application uses environment variables for configuration. Create a .env file in the root directory and add the following variables:
-	PORT=8000
-	MONGO_URI=mongodb://localhost:27017/patientDB
-	FILES_DIR=files
+	1. PORT=8000
+	2. MONGO_URI=mongodb://localhost:27017/patientDB
+	3. FILES_DIR=files
 
 Usage
 Once the server is running, you can interact with the API through tools like Postman or cURL.
