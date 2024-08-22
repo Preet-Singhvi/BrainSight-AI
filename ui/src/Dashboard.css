@@ -1,0 +1,60 @@
+/* Dashboard.css */
+
+.container {
+    background-color: #2C2C2C;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 10px;
+    height: 100%;
+  }
+  
+  .title {
+    color: #E0E0E0;
+    margin-bottom: 20px;
+  }
+  
+  .add-button {
+    margin-bottom: 20px;
+    background-color: #1E88E5;
+    color: #FFF;
+  }
+  
+  .accordion {
+    background-color: #424242;
+    color: #FFFFFF;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+  
+  .accordion-summary {
+    background-color: #424242; /* Ensure the background color is consistent */
+  }
+  
+  .accordion-summary-icon {
+    color: #FFFFFF;
+  }
+  
+  .accordion-details {
+    background-color: #303030;
+  }
+  
+  .table-head-cell, .table-body-cell {
+    color: #B0BEC5;
+  }
+  
+  .table-body-cell {
+    color: #E0E0E0;
+  }
+  
+  .completed {
+    background-color: #4CAF50;
+  }
+  
+  .not-completed {
+    background-color: #B0BEC5;
+  }
+  
+  .button-view-files {
+    color: #1E88E5;
+  }
+  

@@ -1,0 +1,43 @@
+.dialog-content {
+  padding: 20px;
+}
+
+.dialog-content-text {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.file-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.file-name {
+  font-weight: bold;
+  color: #555;
+}
+
+.file-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.upload-section {
+  margin-top: 20px;
+}
+/* 
+.upload-button {
+  width: 50%;
+} */
+
+.cancel-button {
+  color: #ff1744;
+  border-color: #ff1744;
+}
