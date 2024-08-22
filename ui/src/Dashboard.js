@@ -13,6 +13,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
+  Box,
+  TextField,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import AddIcon from "@mui/icons-material/Add";
@@ -22,17 +25,19 @@ import { AddPatients, GetPatients } from "./Service/Service.Patient";
 import PatientDialog from "./Dialogs/PatientDialog/PatientDialog";
 import { useDispatch } from "react-redux";
 import { SetFilesDialog, SetPatientDialog, SetViewFiles } from "./Redux/action";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import FilesDialog from "./Dialogs/FilesDialog/FilesDialog";
 
 const Dashboard = () => {
   const [patients, setPatients] = useState([]);
+  const [filteredPatients, setFilteredPatients] = useState([]);
   const [form, setForm] = useState({
     patient_name: "",
     age: "",
     condition: "",
   });
   const [afiles, setFiles] = useState([]);
+  const [filter, setFilter] = useState("");
   const dispatch = useDispatch();
 
   // Fetch all patients
@@ -41,10 +46,13 @@ const Dashboard = () => {
       GetPatients()
         .then((response) => {
           setPatients(response.data);
+          setFilteredPatients(response.data);
         })
         .catch((error) => {
           console.error("There was an error fetching the patients!", error);
-          toast.error("Failed to get patients details. Please try after some time.");
+          toast.error(
+            "Failed to get patients details. Please try after some time."
+          );
         });
     };
 
@@ -55,8 +63,20 @@ const Dashboard = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  useEffect(() => {
+    if (filter) {
+      setFilteredPatients(
+        patients.filter((patient) =>
+          patient.patient_name.toLowerCase().includes(filter.toLowerCase())
+        )
+      );
+    } else {
+      setFilteredPatients(patients);
+    }
+  }, [filter, patients]);
+
   const handleChange = (event) => {
-    const { name, value, type, files } = event.target;
+    const { name, value, type } = event.target;
     if (type === "file") {
       setFiles(event.target.files);
     } else {
@@ -82,7 +102,7 @@ const Dashboard = () => {
         setForm({ patient_name: "", age: "", condition: "" });
         setFiles([]);
         dispatch(SetPatientDialog(false));
-        toast.success("Patient added successfully!"); 
+        toast.success("Patient added successfully!");
       })
       .catch((error) => {
         console.error("There was an error adding the patient!", error);
@@ -100,6 +120,14 @@ const Dashboard = () => {
     dispatch(SetPatientDialog(false));
   };
 
+  const handleFilterChange = (e) => {
+    setFilter(e.target.value);
+  };
+
+  const clearFilter = () => {
+    setFilter("");
+  };
+
   const formatDate = (date) => {
     if (!date) return "";
     return format(new Date(date), "do MMM, yyyy h:mm a", { locale: enUS });
@@ -110,37 +138,96 @@ const Dashboard = () => {
 
     return (
       <TableCell>
-        <Typography style={{
-          backgroundColor: isCompleted ? "#4CAF50" : "#B0BEC5",
-          color: "white",
-          borderRadius: "8px",
-          padding: "8px",
-          textAlign: "center",
-        }}>
-        {isCompleted ? "Completed" : "Yet To Start"}
+        <Typography
+          style={{
+            backgroundColor: isCompleted ? "#4CAF50" : "#B0BEC5",
+            color: "white",
+            borderRadius: "8px",
+            padding: "8px",
+            textAlign: "center",
+          }}
+        >
+          {isCompleted ? "Completed" : "Yet To Start"}
         </Typography>
       </TableCell>
     );
   };
 
   return (
-    <Container style={{ backgroundColor: "#2C2C2C", color: "#FFFFFF", padding: "20px", borderRadius: "10px", maxHeight:'100%', maxWidth:'100%'}}>
-      <Typography variant="h4" align="center" gutterBottom style={{ color: "#E0E0E0", marginBottom: "20px" }}>
+    <Container
+      style={{
+        backgroundColor: "#2C2C2C",
+        color: "#FFFFFF",
+        padding: "20px",
+        borderRadius: "10px",
+        maxHeight: "100%",
+        maxWidth: "100%",
+      }}
+    >
+      <Typography
+        variant="h4"
+        align="center"
+        gutterBottom
+        style={{ color: "#E0E0E0", marginBottom: "20px" }}
+      >
         Patient Dashboard
       </Typography>
 
-      <Button
-        variant="contained"
-        color="primary"
-        startIcon={<AddIcon />}
-        onClick={handleClickOpen}
-        style={{ marginBottom: "20px", backgroundColor: "#1E88E5", color: "#FFF" }}
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="flex-end"
+        gap="5px"
+        mb={2}
       >
-        Add Patient
-      </Button>
+        <TextField
+          label="Filter by Patient Name"
+          variant="outlined"
+          size="small"
+          value={filter}
+          onChange={handleFilterChange}
+          style={{
+            width: 200,
+            height: "40px",
+            backgroundColor: "#424242",
+            color: "#FFFFFF",
+            "& .MuiInputBase-root": { height: "100%" },
+            "& .MuiInputLabel-root": { color: "#FFFFFF" },
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": { borderColor: "#FFFFFF" },
+              "&:hover fieldset": { borderColor: "#1E88E5" },
+              "&.Mui-focused fieldset": { borderColor: "#1E88E5" },
+            },
+          }}
+        />
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={clearFilter}
+          style={{
+            height: "40px",
+          }}
+        >
+          Clear Filter
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          startIcon={<AddIcon />}
+          onClick={handleClickOpen}
+          style={{
+            backgroundColor: "#1E88E5",
+            color: "#FFF",
+            height: "40px",
+            marginRight: 16,
+          }}
+        >
+          Add Patient
+        </Button>
+      </Box>
 
       <div style={{ marginTop: "24px" }}>
-        {patients.map((patient) => (
+        {filteredPatients.map((patient) => (
           <Accordion
             key={patient._id}
             style={{
@@ -171,43 +258,75 @@ const Dashboard = () => {
               )}
             </AccordionSummary>
             <AccordionDetails>
-              <TableContainer component={Paper} style={{ backgroundColor: "#303030" }}>
+              <TableContainer
+                component={Paper}
+                style={{ backgroundColor: "#303030" }}
+              >
                 <Table>
                   <TableHead>
                     <TableRow>
-                      <TableCell style={{ color: "#B0BEC5" }}>Patient ID</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Patient Name</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Age, Sex</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Condition</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Date of Upload</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Files Uploaded</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Processing Status</TableCell>
-                      <TableCell style={{ color: "#B0BEC5" }}>Actions</TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Patient ID
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Patient Name
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Age, Sex
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Condition
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Date of Upload
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Files Uploaded
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Processing Status
+                      </TableCell>
+                      <TableCell style={{ color: "#B0BEC5" }}>
+                        Actions
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     <TableRow>
-                      <TableCell style={{ color: "#E0E0E0" }}>{patient.patient_id}</TableCell>
-                      <TableCell style={{ color: "#E0E0E0" }}>{patient.patient_name}</TableCell>
-                      <TableCell style={{ color: "#E0E0E0" }}>{patient.age_sex}</TableCell>
-                      <TableCell style={{ color: "#E0E0E0" }}>{patient.condition}</TableCell>
-                      <TableCell style={{ color: "#E0E0E0" }}>{formatDate(patient.dateOfUpload)}</TableCell>
+                      <TableCell style={{ color: "#E0E0E0" }}>
+                        {patient.patient_id}
+                      </TableCell>
+                      <TableCell style={{ color: "#E0E0E0" }}>
+                        {patient.patient_name}
+                      </TableCell>
+                      <TableCell style={{ color: "#E0E0E0" }}>
+                        {patient.age_sex}
+                      </TableCell>
+                      <TableCell style={{ color: "#E0E0E0" }}>
+                        {patient.condition}
+                      </TableCell>
+                      <TableCell style={{ color: "#E0E0E0" }}>
+                        {formatDate(patient.dateOfUpload)}
+                      </TableCell>
                       <TableCell style={{ color: "#E0E0E0" }}>
                         {patient.filenames && patient.filenames.join(" | ")}
                       </TableCell>
                       {FileProcessTableCell(patient)}
                       <TableCell>
-                        <Button
-                          onClick={() => {
-                            dispatch(SetFilesDialog(true));
-                            dispatch(SetViewFiles(patient));
-                          }}>
-                        <img
-                          src="https://uat-vbexplore.brainsightai.com/img/report_icon2.edf631e0.svg"
-                          alt="View Files Icon"
-                          style={{ marginRight: 8 }}
-                        />
-                        </Button>
+                        <Tooltip title="View Files">
+                          <Button
+                            onClick={() => {
+                              dispatch(SetFilesDialog(true));
+                              dispatch(SetViewFiles(patient));
+                            }}
+                          >
+                            <img
+                              src="https://uat-vbexplore.brainsightai.com/img/report_icon2.edf631e0.svg"
+                              alt="View Files Icon"
+                              style={{ marginRight: 8 }}
+                            />
+                          </Button>
+                        </Tooltip>
                       </TableCell>
                     </TableRow>
                   </TableBody>

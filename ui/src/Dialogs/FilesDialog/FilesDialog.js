@@ -1,8 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import {
-  FilesDialogOpen,
-  ViewFiles,
-} from "../../Redux/reducer";
+import { FilesDialogOpen, ViewFiles } from "../../Redux/reducer";
 import React, { useEffect, useState } from "react";
 import {
   Button,
@@ -12,10 +9,11 @@ import {
   DialogContentText,
   DialogTitle,
   TextField,
+  Tooltip,
 } from "@mui/material";
 import { SetFilesDialog, SetViewFiles } from "../../Redux/action";
-import { toast } from 'react-toastify';
-import './FilesDialog.css';
+import { toast } from "react-toastify";
+import "./FilesDialog.css";
 import { UpdatePatientById } from "../../Service/Service.Patient";
 
 const FilesDialog = () => {
@@ -28,39 +26,38 @@ const FilesDialog = () => {
 
   useEffect(() => {
     setFileNames(rsViewFiles?.filenames);
-  }, [rsViewFiles,selectedFiles]);
+  }, [rsViewFiles, selectedFiles]);
 
   const handleClose = () => {
     dispatch(SetViewFiles(null));
-    setUploaded(false)
+    setUploaded(false);
     dispatch(SetFilesDialog(false));
-
   };
 
   const handleFileChange = (event) => {
-    setUploaded(true)
+    setUploaded(true);
     setSelectedFiles(event.target.files);
   };
 
   const handleUpload = async () => {
     const formData = new FormData();
     for (let file of selectedFiles) {
-        formData.append("files", file);
-      }
-  
+      formData.append("files", file);
+    }
 
     try {
-        UpdatePatientById(rsViewFiles.patient_id, formData).then((response) => {
+      UpdatePatientById(rsViewFiles.patient_id, formData)
+        .then((response) => {
           setFileNames([...aFileNames, ...response.data.filenames]);
           setSelectedFiles([]);
-          dispatch(SetFilesDialog(false))
-          setUploaded(false)
+          dispatch(SetFilesDialog(false));
+          setUploaded(false);
           toast.success("Patient updated successfully!");
         })
         .catch((error) => {
-            console.error(error)
-            toast.error("Failed to update patient. Please try again.");
-        })
+          console.error(error);
+          toast.error("Failed to update patient. Please try again.");
+        });
     } catch (error) {
       console.error("Error uploading files:", error);
     }
@@ -76,32 +73,35 @@ const FilesDialog = () => {
               <div key={index} className="file-item">
                 <span className="file-name">{filename}</span>
                 <div className="file-actions">
-                  <Button
-                    href={`http://localhost:8000/download/${filename}`}
-                    download
-                    variant="contained"
-                    color="primary"
-                    startIcon={
-                      <img
-                        src="https://uat-vbexplore.brainsightai.com/img/download_icon2.f75eb645.svg"
-                        alt="Download Icon"
-                        style={{ width: 24, height: 24 }}
-                      />
-                    }
-                  >
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      window.open(
-                        `http://localhost:8000/files/${filename}`,
-                        "_blank",
-                        "noreferrer"
-                      );
-                    }}
-                    variant="contained"
-                  >
-                    View
-                  </Button>
+                  <Tooltip title="Download PDF">
+                    <Button
+                      href={`http://localhost:8000/download/${filename}`}
+                      download
+                      variant="contained"
+                      color="primary"
+                      startIcon={
+                        <img
+                          src="https://uat-vbexplore.brainsightai.com/img/download_icon2.f75eb645.svg"
+                          alt="Download Icon"
+                          style={{ width: 24, height: 24 }}
+                        />
+                      }
+                    ></Button>
+                  </Tooltip>
+                  <Tooltip title="View PDF">
+                    <Button
+                      onClick={() => {
+                        window.open(
+                          `http://localhost:8000/files/${filename}`,
+                          "_blank",
+                          "noreferrer"
+                        );
+                      }}
+                      variant="contained"
+                    >
+                      View
+                    </Button>
+                  </Tooltip>
                 </div>
               </div>
             ))
@@ -122,14 +122,14 @@ const FilesDialog = () => {
       </DialogContent>
       <DialogActions>
         <Button
-            onClick={handleUpload}
-            color="primary"
-            variant="contained"
-            className="upload-button"
-            disabled={!isUploaded}
-          >
-            Save
-          </Button>
+          onClick={handleUpload}
+          color="primary"
+          variant="contained"
+          className="upload-button"
+          disabled={!isUploaded}
+        >
+          Save
+        </Button>
         <Button
           onClick={handleClose}
           color="primary"
