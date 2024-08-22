@@ -44,7 +44,8 @@ Once the server is running, you can interact with the API through tools like Pos
 	Description: Create a new patient record with associated files.
 	Request Body:
 		patient_name (String) - Required.
-		age_sex (String) - Required.
+		age(Number) - Required.
+		se(String) - Required.
 		condition (String) - Required.
 		Files: Multiple files can be uploaded.
 		processing_status(String) - Required.
@@ -57,7 +58,8 @@ Once the server is running, you can interact with the API through tools like Pos
 3. PUT /api/patients/:id
 	Description: Update patient information and/or upload additional files.
 	Request Body:
-		age_sex (String) - Optional.
+		age (Number) - Optional.
+		sex (String) - Optional.
 		condition (String) - Optional.
 		processing_status(String) - Optional.
 		Files: Multiple files can be uploaded.
