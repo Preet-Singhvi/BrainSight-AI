@@ -17,7 +17,7 @@ const upload = multer({ storage: storage });
 
 router.post('/patients', upload.array('files'), async (req, res) => {
   try {
-    const { patient_name, age_sex, condition, fileProcess} = req.body;
+    const { patient_name, age_sex, condition, processing_status } = req.body;
     const patient_id = Date.now() + '-' + Math.floor(Math.random() * 10000);
     const filenames = req.files.map(file => file.filename);
     const patient = new Patient({
@@ -25,7 +25,8 @@ router.post('/patients', upload.array('files'), async (req, res) => {
       patient_name,
       age_sex,
       condition,
-      filenames
+      filenames,
+      processing_status
     });
 
     await patient.save();
@@ -61,10 +62,11 @@ router.put('/patients/:id', upload.array('files'), async (req, res) => {
   try {
     const patient_id = req.params.id;
 
-    const { age, condition } = req.body;
+    const { age, condition, processing_status } = req.body;
     const updateFields = {};
     if (age !== undefined) updateFields.age = age;
     if (condition !== undefined) updateFields.condition = condition;
+    if (processing_status !== undefined) updateFields.processing_status = processing_status;
 
     const existingPatient = await Patient.findOne({ patient_id });
     if (!existingPatient) {

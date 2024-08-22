@@ -47,6 +47,7 @@ Once the server is running, you can interact with the API through tools like Pos
 		age_sex (String) - Required.
 		condition (String) - Required.
 		Files: Multiple files can be uploaded.
+		processing_status(String) - Required.
 	Response:
 		200 OK on success, with patient details in the response body.
 2. GET /api/patients
@@ -58,6 +59,7 @@ Once the server is running, you can interact with the API through tools like Pos
 	Request Body:
 		age_sex (String) - Optional.
 		condition (String) - Optional.
+		processing_status(String) - Optional.
 		Files: Multiple files can be uploaded.
 	Response:
 		200 OK with the updated patient object.
