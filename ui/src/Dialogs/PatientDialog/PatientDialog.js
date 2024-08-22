@@ -21,7 +21,7 @@ const PatientDialog = (props) => {
       <DialogContent>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} marginTop={0.1}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
                 label="Patient Name"
                 name="patient_name"
@@ -32,7 +32,7 @@ const PatientDialog = (props) => {
                 required
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Age"
                 name="age"
@@ -45,7 +45,7 @@ const PatientDialog = (props) => {
                 inputProps={{ min: 0, step: 1 }}
               />
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={3}>
               <TextField
                 label="Sex"
                 name="sex"
