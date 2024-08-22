@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [form, setForm] = useState({
     patient_name: "",
     age: "",
+    sex: "",
     condition: "",
   });
   const [afiles, setFiles] = useState([]);
@@ -89,8 +90,9 @@ const Dashboard = () => {
     const formData = new FormData();
 
     formData.append("patient_name", form.patient_name);
-    formData.append("age_sex", form.age_sex);
-    formData.append("condition", form.condition); 
+    formData.append("age", form.age);
+    formData.append("sex", form.sex);
+    formData.append("condition", form.condition);
     const processingStatus = afiles.length > 0 ? "Completed" : "Yet To Start";
     formData.append("processing_status", processingStatus);
     for (let file of afiles) {
@@ -100,7 +102,7 @@ const Dashboard = () => {
     AddPatients(formData)
       .then((response) => {
         setPatients([...patients, response.data]);
-        setForm({ patient_name: "", age: "", condition: "" });
+        setForm({ patient_name: "", age: "", sex: "", condition: "" });
         setFiles([]);
         dispatch(SetPatientDialog(false));
         toast.success("Patient added successfully!");
@@ -112,7 +114,7 @@ const Dashboard = () => {
   };
 
   const handleClickOpen = () => {
-    setForm({ patient_name: "", age: "", condition: "" });
+    setForm({ patient_name: "", age: "", sex: "", condition: "" });
     setFiles([]);
     dispatch(SetPatientDialog(true));
   };
@@ -136,10 +138,10 @@ const Dashboard = () => {
 
   const FileProcessTableCell = (patient) => {
     const status = patient.processing_status;
-    
+
     let backgroundColor;
     let textColor = "white";
-  
+
     switch (status) {
       case "Yet To Start":
         backgroundColor = "#B0BEC5";
@@ -156,7 +158,7 @@ const Dashboard = () => {
       default:
         backgroundColor = "#B0BEC5";
     }
-  
+
     return (
       <TableCell>
         <Typography
@@ -189,7 +191,7 @@ const Dashboard = () => {
         variant="h4"
         align="center"
         gutterBottom
-        style={{ color: "#E0E0E0", marginBottom: "20px" }}
+        sx={{ color: "#E0E0E0", marginBottom: 4 }}
       >
         Patient Dashboard
       </Typography>
@@ -198,27 +200,19 @@ const Dashboard = () => {
         display="flex"
         alignItems="center"
         justifyContent="flex-end"
-        gap="5px"
+        gap="10px"
         mb={2}
       >
         <TextField
           label="Filter by Patient Name"
-          variant="outlined"
           size="small"
           value={filter}
           onChange={handleFilterChange}
           style={{
             width: 200,
             height: "40px",
-            backgroundColor: "#424242",
-            color: "#FFFFFF",
-            "& .MuiInputBase-root": { height: "100%" },
-            "& .MuiInputLabel-root": { color: "#FFFFFF" },
-            "& .MuiOutlinedInput-root": {
-              "& fieldset": { borderColor: "#FFFFFF" },
-              "&:hover fieldset": { borderColor: "#1E88E5" },
-              "&.Mui-focused fieldset": { borderColor: "#1E88E5" },
-            },
+            borderRadius: "0px",
+            backgroundColor: "#F2F2F2",
           }}
         />
         <Button
@@ -237,10 +231,7 @@ const Dashboard = () => {
           startIcon={<AddIcon />}
           onClick={handleClickOpen}
           style={{
-            backgroundColor: "#1E88E5",
-            color: "#FFF",
             height: "40px",
-            marginRight: 16,
           }}
         >
           Add Patient
@@ -321,7 +312,7 @@ const Dashboard = () => {
                         {patient.patient_name}
                       </TableCell>
                       <TableCell style={{ color: "#E0E0E0" }}>
-                        {patient.age_sex}
+                        {`${patient.age}, ${patient.sex}`}
                       </TableCell>
                       <TableCell style={{ color: "#E0E0E0" }}>
                         {patient.condition}
@@ -364,10 +355,7 @@ const Dashboard = () => {
         handleSubmit={handleSubmit}
         handleClose={handleClose}
       />
-      <FilesDialog 
-        patients={patients}
-        setPatients={setPatients}
-      />
+      <FilesDialog patients={patients} setPatients={setPatients} />
     </Container>
   );
 };

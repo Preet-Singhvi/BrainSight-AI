@@ -8,8 +8,8 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import { SetFilesDialog, SetViewFiles } from "../../Redux/action";
 import { toast } from "react-toastify";
@@ -44,17 +44,23 @@ const FilesDialog = (props) => {
     for (let file of selectedFiles) {
       formData.append("files", file);
     }
-    const processingStatus = selectedFiles.length > 0 ? "Completed" : "Yet To Start";
+    const processingStatus =
+      selectedFiles.length > 0 ? "Completed" : "Yet To Start";
     formData.append("processing_status", processingStatus);
     try {
       UpdatePatientById(rsViewFiles.patient_id, formData)
         .then((response) => {
-          const updatedFilenames = [...aFileNames, ...response.data.filenames]; 
-          const processingStatus = updatedFilenames.length > 0 ? "Completed" : "Yet To Start";
-          props.setPatients(prevPatients =>
-            prevPatients.map(patient =>
+          const updatedFilenames = [...response.data.filenames];
+          const processingStatus =
+            updatedFilenames.length > 0 ? "Completed" : "Yet To Start";
+          props.setPatients((prevPatients) =>
+            prevPatients.map((patient) =>
               patient.patient_id === rsViewFiles.patient_id
-                ? { ...patient, filenames: updatedFilenames, processing_status: processingStatus }
+                ? {
+                    ...patient,
+                    filenames: updatedFilenames,
+                    processing_status: processingStatus,
+                  }
                 : patient
             )
           );
@@ -119,6 +125,9 @@ const FilesDialog = (props) => {
           )}
         </DialogContentText>
         <div className="upload-section">
+          <Typography>
+            <bold>Upload New Files:</bold>
+          </Typography>
           <input
             type="file"
             class="form-control"
@@ -142,7 +151,7 @@ const FilesDialog = (props) => {
         <Button
           onClick={handleClose}
           color="primary"
-          variant="contained"
+          variant="outlined"
           className="cancel-button"
         >
           Cancel

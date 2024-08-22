@@ -8,7 +8,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
 } from "@mui/material";
 
@@ -20,12 +19,9 @@ const PatientDialog = (props) => {
     <Dialog open={rsPatientDialog} onClose={handleClose}>
       <DialogTitle>{"Add New Patient"}</DialogTitle>
       <DialogContent>
-        <DialogContentText>
-          {"Fill in the details of the new patient."}
-        </DialogContentText>
         <form onSubmit={handleSubmit}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
+          <Grid container spacing={2} marginTop={0.1}>
+            <Grid item xs={12} sm={6}>
               <TextField
                 label="Patient Name"
                 name="patient_name"
@@ -38,11 +34,24 @@ const PatientDialog = (props) => {
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField
-                label="Age, Sex"
-                name="age_sex"
+                label="Age"
+                name="age"
+                variant="outlined"
+                type="number"
+                fullWidth
+                value={form.age}
+                onChange={handleChange}
+                required
+                inputProps={{ min: 0, step: 1 }}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Sex"
+                name="sex"
                 variant="outlined"
                 fullWidth
-                value={form.age_sex}
+                value={form.sex}
                 onChange={handleChange}
                 required
               />
@@ -82,7 +91,7 @@ const PatientDialog = (props) => {
         </form>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary">
+        <Button onClick={handleClose} variant="outlined" color="primary">
           Cancel
         </Button>
       </DialogActions>
