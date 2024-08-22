@@ -16,7 +16,7 @@ import { toast } from "react-toastify";
 import "./FilesDialog.css";
 import { UpdatePatientById } from "../../Service/Service.Patient";
 
-const FilesDialog = () => {
+const FilesDialog = (props) => {
   const rsFilesDialog = useSelector(FilesDialogOpen);
   const rsViewFiles = useSelector(ViewFiles);
   const [aFileNames, setFileNames] = useState([]);
@@ -44,11 +44,20 @@ const FilesDialog = () => {
     for (let file of selectedFiles) {
       formData.append("files", file);
     }
-
+    const processingStatus = selectedFiles.length > 0 ? "Completed" : "Yet To Start";
+    formData.append("processing_status", processingStatus);
     try {
       UpdatePatientById(rsViewFiles.patient_id, formData)
         .then((response) => {
-          setFileNames([...aFileNames, ...response.data.filenames]);
+          const updatedFilenames = [...aFileNames, ...response.data.filenames]; 
+          const processingStatus = updatedFilenames.length > 0 ? "Completed" : "Yet To Start";
+          props.setPatients(prevPatients =>
+            prevPatients.map(patient =>
+              patient.patient_id === rsViewFiles.patient_id
+                ? { ...patient, filenames: updatedFilenames, processing_status: processingStatus }
+                : patient
+            )
+          );
           setSelectedFiles([]);
           dispatch(SetFilesDialog(false));
           setUploaded(false);

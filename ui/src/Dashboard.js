@@ -90,8 +90,9 @@ const Dashboard = () => {
 
     formData.append("patient_name", form.patient_name);
     formData.append("age_sex", form.age_sex);
-    formData.append("condition", form.condition);
-
+    formData.append("condition", form.condition); 
+    const processingStatus = afiles.length > 0 ? "Completed" : "Yet To Start";
+    formData.append("processing_status", processingStatus);
     for (let file of afiles) {
       formData.append("files", file);
     }
@@ -134,20 +135,40 @@ const Dashboard = () => {
   };
 
   const FileProcessTableCell = (patient) => {
-    const isCompleted = patient.filenames && patient.filenames.length > 0;
-
+    const status = patient.processing_status;
+    
+    let backgroundColor;
+    let textColor = "white";
+  
+    switch (status) {
+      case "Yet To Start":
+        backgroundColor = "#B0BEC5";
+        break;
+      case "Processing":
+        backgroundColor = "#FFEB3B";
+        break;
+      case "Completed":
+        backgroundColor = "#4CAF50";
+        break;
+      case "Failed":
+        backgroundColor = "#F44336";
+        break;
+      default:
+        backgroundColor = "#B0BEC5";
+    }
+  
     return (
       <TableCell>
         <Typography
           style={{
-            backgroundColor: isCompleted ? "#4CAF50" : "#B0BEC5",
-            color: "white",
+            backgroundColor,
+            color: textColor,
             borderRadius: "8px",
             padding: "8px",
             textAlign: "center",
           }}
         >
-          {isCompleted ? "Completed" : "Yet To Start"}
+          {status}
         </Typography>
       </TableCell>
     );
@@ -343,7 +364,10 @@ const Dashboard = () => {
         handleSubmit={handleSubmit}
         handleClose={handleClose}
       />
-      <FilesDialog />
+      <FilesDialog 
+        patients={patients}
+        setPatients={setPatients}
+      />
     </Container>
   );
 };
