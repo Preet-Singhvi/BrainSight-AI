@@ -28,7 +28,7 @@ This Node.js backend application handles patient data, including secure file upl
 # Environment Variables
 The application uses environment variables for configuration. Create a .env file in the root directory and add the following variables:
 	1. PORT=8000
-	2. MONGO_URI=mongodb://localhost:27017/patientDB
+	2. MONGO_URL=mongodb+srv://preetsinghvi1:3DFlOA9C1fvJBDQ4@cluster0.comep.mongodb.net/patientDB?retryWrites=true&w=majority&appName=Cluster0
 	3. FILES_DIR=files
 
 # Usage
