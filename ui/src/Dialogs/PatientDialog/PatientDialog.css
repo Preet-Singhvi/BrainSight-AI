@@ -1,38 +1,53 @@
-.dialog-container {
-  background-color: #2C2C2C;
-  color: #FFFFFF;
-  border-radius: 10px;
-  padding: 20px;
+.dialog {
+  color: #ccc;
+  background-color: #2e2e2e;
+  padding: 16px !important;
 }
 
-.dialog-title {
-  color: #E0E0E0;
-  font-size: 1.5rem;
-}
-
-.dialog-content {
-  background-color: #303030;
-  padding: 20px;
-}
-
-.dialog-content-text {
-  color: #B0BEC5;
-}
-
-.input-field {
-  background-color: #424242;
-  color: #E0E0E0;
-  border-radius: 8px;
-}
-
-.dialog-button {
-  background-color: #1E88E5;
-  color: #FFF;
-  &:hover {
-    background-color: #1565C0;
+.text-field .MuiInputLabel-root {
+  color: #ddd;
+  &.Mui-focused {
+    color: #ddd !important
   }
 }
 
-.dialog-cancel-button {
-  color: #E0E0E0;
+.text-field .MuiOutlinedInput-root {
+  fieldset {
+    border-color: #444;
+  }
+  &:hover fieldset {
+    border-color: #777;
+  }
+  &.Mui-focused fieldset {
+    border-color: #777;
+  }
+}
+
+.text-field .MuiInputBase-input {
+  color: #ccc;
+}
+
+
+.file-input {
+  background-color: #3c3c3c;
+  color: #ddd;
+  padding: 10px;
+  border: 1px solid #444;
+  border-radius: 5px;
+}
+
+.upload-section {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.submit-button {
+  background-color: #4caf50 !important;
+  color: #fff !important;
+}
+
+.cancel-button {
+  border-color: #ff5252 !important;
+  color: #ff5252 !important;
 }

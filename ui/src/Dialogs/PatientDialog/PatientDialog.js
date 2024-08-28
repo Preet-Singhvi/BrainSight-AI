@@ -3,6 +3,7 @@ import { PatientDialogOpen } from "../../Redux/reducer";
 import React from "react";
 import {
   TextField,
+  Typography,
   Button,
   Grid,
   Dialog,
@@ -10,6 +11,7 @@ import {
   DialogContent,
   DialogTitle,
 } from "@mui/material";
+import './PatientDialog.css'
 
 const PatientDialog = (props) => {
   const rsPatientDialog = useSelector(PatientDialogOpen);
@@ -17,8 +19,8 @@ const PatientDialog = (props) => {
 
   return (
     <Dialog open={rsPatientDialog} onClose={handleClose}>
-      <DialogTitle>{"Add New Patient"}</DialogTitle>
-      <DialogContent>
+      <DialogTitle className="dialog">{"Add New Patient"}</DialogTitle>
+      <DialogContent className="dialog">
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2} marginTop={0.1}>
             <Grid item xs={12}>
@@ -26,6 +28,7 @@ const PatientDialog = (props) => {
                 label="Patient Name"
                 name="patient_name"
                 variant="outlined"
+                className="text-field"
                 fullWidth
                 value={form.patient_name}
                 onChange={handleChange}
@@ -38,6 +41,7 @@ const PatientDialog = (props) => {
                 name="age"
                 variant="outlined"
                 type="number"
+                className="text-field"
                 fullWidth
                 value={form.age}
                 onChange={handleChange}
@@ -50,6 +54,7 @@ const PatientDialog = (props) => {
                 label="Sex"
                 name="sex"
                 variant="outlined"
+                className="text-field"
                 fullWidth
                 value={form.sex}
                 onChange={handleChange}
@@ -61,13 +66,17 @@ const PatientDialog = (props) => {
                 label="Condition"
                 name="condition"
                 variant="outlined"
+                className="text-field"
                 fullWidth
                 value={form.condition}
                 onChange={handleChange}
                 required
               />
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} className="upload-section">
+              <Typography>
+                <bold>Upload New Files:</bold>
+              </Typography>
               <input
                 type="file"
                 class="form-control"
@@ -82,6 +91,7 @@ const PatientDialog = (props) => {
                 type="submit"
                 variant="contained"
                 color="primary"
+                className="submit-button"
                 fullWidth
               >
                 {"Add Patient"}
@@ -90,8 +100,8 @@ const PatientDialog = (props) => {
           </Grid>
         </form>
       </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} variant="outlined" color="primary">
+      <DialogActions className="dialog">
+        <Button onClick={handleClose} variant="outlined" color="primary" className="cancel-button">
           Cancel
         </Button>
       </DialogActions>
