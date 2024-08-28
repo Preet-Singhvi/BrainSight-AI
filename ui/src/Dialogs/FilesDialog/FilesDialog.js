@@ -80,8 +80,8 @@ const FilesDialog = (props) => {
 
   return (
     <Dialog open={rsFilesDialog} onClose={handleClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Files</DialogTitle>
-      <DialogContent className="dialog-content">
+      <DialogTitle className="dialog">Files</DialogTitle>
+      <DialogContent className="dialog">
         <DialogContentText className="dialog-content-text">
           {aFileNames && aFileNames.length > 0 ? (
             aFileNames.map((filename, index) => (
@@ -92,8 +92,6 @@ const FilesDialog = (props) => {
                     <Button
                       href={`http://localhost:8000/download/${filename}`}
                       download
-                      variant="contained"
-                      color="primary"
                       startIcon={
                         <img
                           src="https://uat-vbexplore.brainsightai.com/img/download_icon2.f75eb645.svg"
@@ -101,6 +99,12 @@ const FilesDialog = (props) => {
                           style={{ width: 24, height: 24 }}
                         />
                       }
+                      sx={{
+                        '.MuiButton-startIcon': {
+                          marginRight: 0,
+                          marginLeft: 0,
+                        },
+                      }}
                     ></Button>
                   </Tooltip>
                   <Tooltip title="View PDF">
@@ -112,7 +116,7 @@ const FilesDialog = (props) => {
                           "noreferrer"
                         );
                       }}
-                      variant="contained"
+                      className="view-button"
                     >
                       View
                     </Button>
@@ -138,11 +142,10 @@ const FilesDialog = (props) => {
           />
         </div>
       </DialogContent>
-      <DialogActions>
+      <DialogActions className="dialog">
         <Button
           onClick={handleUpload}
-          color="primary"
-          variant="contained"
+          variant="outlined"
           className="upload-button"
           disabled={!isUploaded}
         >
@@ -150,7 +153,6 @@ const FilesDialog = (props) => {
         </Button>
         <Button
           onClick={handleClose}
-          color="primary"
           variant="outlined"
           className="cancel-button"
         >
