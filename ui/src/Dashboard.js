@@ -41,6 +41,7 @@ const Dashboard = () => {
   const [filter, setFilter] = useState("");
   const dispatch = useDispatch();
 
+  // Fetch all patients
   useEffect(() => {
     const fetchPatients = () => {
       GetPatients()
@@ -211,23 +212,26 @@ const Dashboard = () => {
             width: 200,
             height: 40,
             borderRadius: 0,
-            backgroundColor: "#F2F2F2",
+            backgroundColor: "#3c3c3c",
             "& .MuiOutlinedInput-root": {
               "& fieldset": {
-                borderColor: "black",
+                borderColor: "#444",
               },
               "&:hover fieldset": {
-                borderColor: "black",
+                borderColor: "#777",
               },
               "&.Mui-focused fieldset": {
-                borderColor: "black",
+                borderColor: "#777",
               },
             },
             "& .MuiInputLabel-root": {
-              color: "black",
+              color: "#ccc",
+              "&.Mui-focused": {
+                color: "#ccc !important",
+              },
             },
             "& .MuiInputBase-input": {
-              color: "black",
+              color: "#ccc",
             },
           }}
         />
