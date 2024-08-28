@@ -125,7 +125,7 @@ const FilesDialog = (props) => {
               </div>
             ))
           ) : (
-            <p>No files available</p>
+            <p className="file-name">No files available</p>
           )}
         </DialogContentText>
         <div className="upload-section">
