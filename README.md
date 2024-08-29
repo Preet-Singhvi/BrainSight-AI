@@ -8,6 +8,7 @@ This Node.js backend application handles patient data, including secure file upl
 3. Secure File Access: Serve stored files securely via a static endpoint.
 4. Robust Security: Implemented security practices including CORS.
 5. Modular Design: Separation of concerns with dedicated modules for routing, database connection, and configuration.
+6. Real-Time Notifications: Implemented WebSocket support for real-time notifications on new patient records.
 
 # Installation
 1. Prerequisites:
@@ -69,6 +70,11 @@ Once the server is running, you can interact with the API through tools like Pos
 # File Storage
 Uploaded files are stored in the directory specified by the FILES_DIR environment variable. By default, this is the files directory in the root of the project.
 
+# Real-Time Updates
+The backend now supports real-time updates using WebSockets in addition to the existing polling mechanism:
+1. WebSocket Notifications: Connected clients receive real-time notifications whenever a new patient record is created.
+2. Polling: A fallback polling mechanism continues to request updates every 10 seconds to keep data current.
+
 # Note:
 1. Ensure 'files' directory is present.
 
@@ -118,8 +124,9 @@ Ensure the backend server is running on http://localhost:8000. The API endpoints
 2. Props Management: Handles component-specific state and actions passed as props, enabling components to communicate and manage their own local state.
 
 # Real-Time Updates
-The application uses a polling mechanism to ensure that patient data is updated automatically:
-1. Polling Interval: A GET request is made every 10 seconds to fetch the latest patient data and reflect any database changes without needing a manual refresh.
+The application now supports real-time updates using WebSockets along with the existing polling mechanism:
+1. WebSocket Integration: The frontend receives real-time notifications when a new patient is added, allowing for immediate updates to the UI.
+2. Polling Interval: A GET request is made every 10 seconds to fetch the latest patient data and reflect any database changes without needing a manual refresh.
 
 # Components
 1. Dashboard: Displays patient information in a table and allows adding new patients.
