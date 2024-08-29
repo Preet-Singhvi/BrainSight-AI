@@ -42,20 +42,48 @@ const Dashboard = () => {
   const dispatch = useDispatch();
 
   // Fetch all patients
+  const fetchPatients = () => {
+    GetPatients()
+      .then((response) => {
+        setPatients(response.data);
+        setFilteredPatients(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error fetching the patients!", error);
+        toast.error(
+          "Failed to get patients details. Please try after some time."
+        );
+      });
+  };
+
   useEffect(() => {
-    const fetchPatients = () => {
-      GetPatients()
-        .then((response) => {
-          setPatients(response.data);
-          setFilteredPatients(response.data);
-        })
-        .catch((error) => {
-          console.error("There was an error fetching the patients!", error);
-          toast.error(
-            "Failed to get patients details. Please try after some time."
-          );
-        });
+    const socket = new WebSocket('ws://localhost:8080/ws');
+
+    socket.onopen = () => {
+      console.log('WebSocket connection established');
     };
+    socket.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+  
+    socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      
+      if (message.type === 'Updated') {
+        fetchPatients()
+      }
+    };
+
+    socket.onclose = (event) => {
+      console.log('WebSocket connection closed:', event.reason);
+    }
+
+    return () => {
+      socket.close();
+    };
+  }, []);
+
+  useEffect(() => {
 
     fetchPatients();
 
