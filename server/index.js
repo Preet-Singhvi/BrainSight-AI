@@ -91,7 +91,7 @@ app.get('/patients', async (req, res) => {
 
 app.get('/download/:filename', (req, res) => {
   const filename = req.params.filename;
-  const filePath = `${__dirname}/../files/${filename}`;
+  const filePath = `${__dirname}/files/${filename}`;
 
   res.download(filePath, filename, (err) => {
     if (err) {
