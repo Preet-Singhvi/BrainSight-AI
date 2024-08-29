@@ -211,8 +211,7 @@ const Dashboard = () => {
         color: "#FFFFFF",
         padding: "20px",
         borderRadius: "10px",
-        maxHeight: "100%",
-        maxWidth: "100%",
+        maxWidth: "100vw",
       }}
     >
       <Typography
